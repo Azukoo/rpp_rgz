@@ -1,4 +1,4 @@
-name: CI
+name: CI Pipeline
 
 on:
   push:
@@ -10,22 +10,21 @@ jobs:
   test-and-security:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Python 3.10
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flask flasgger flask-login bandit pytest
+          pip install -r requirements.txt
 
       - name: Run unit tests
-        run: |
-          python -m pytest tests/ -v
+        run: python -m pytest test_app.py -v
 
       - name: Run Bandit security check
-        run: |
-          bandit -r . -x ./tests,./venv,.github
+        run: bandit -r . -x ./test_app.py,./.github
