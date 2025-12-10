@@ -23,8 +23,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Ensure package structure
+        run: touch __init__.py
+
       - name: Run unit tests
         run: python -m pytest test_app.py -v
 
       - name: Run Bandit security check
-        run: bandit -r . -x ./test_app.py,./.github
+        run: bandit -r . -x ./test_app.py,./.github,./venv
